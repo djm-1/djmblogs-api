@@ -1,0 +1,39 @@
+<div class="card-body table-responsive">
+<table class="table table-bordered" id="nlt" style="width: 100%;">
+    <thead class="bg-light">
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Date</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for letter in newsletters%}
+      <tr>
+        <td>{{letter.title|truncatewords:4}}</td>
+        <td>{{letter.date_time}}</td>
+        <td class="text-center">
+            {% if letter.published %}
+            <span class="text-primary text-bold">
+                Delivered
+                <i class="ion-android-checkmark-circle"></i>
+            </span>
+            {% else %}
+            <a class="btn btn-primary" href="{% url 'send_newsletter' letter.id %}">
+                Send Newsletter
+                <i class="ion-android-send"></i>
+            </a>
+            {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+  <script>
+    //alert('{{newsletters}}')
+    $(document).ready( function () {
+      $('#nlt').DataTable();
+      
+  } );
+  </script>

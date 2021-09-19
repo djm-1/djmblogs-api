@@ -1,0 +1,393 @@
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<style>
+  #chartdiv {
+    width: 100%;
+    height: 500px;
+  }
+  </style>
+  
+  <!-- Resources -->
+  <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/geodata/worldLow.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/geodata/data/countries2.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+  
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h3 id="totalviews"></h3>
+
+          <p>Monthly views</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-eye"></i>
+        </div>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>53</h3>
+
+          <p>Comments</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-chatboxes"></i>
+        </div>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-secondary">
+        <div class="inner">
+          <h3 id="totalvisitors"></h3>
+
+          <p>Monthly visitors</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-person-add"></i>
+        </div>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>65</h3>
+
+          <p>Likes</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-thumbsup"></i>
+        </div>
+      </div>
+    </div>
+    <!-- ./col -->
+  </div>
+
+
+
+<!-- charts display -->
+
+<div class="card">
+    <h5 class="card-header bg-pink">Weekly page view data</h5>
+    <div class="card-body p-2">
+      <canvas id="myChart" width="100%"></canvas>
+    </div>
+</div>
+
+<!-- HTML -->
+
+<div class="card">
+  <h5 class="card-header bg-info">Monthly country wise visitors</h5>
+  <div class="card-body p-2">
+    <div id="chartdiv"></div>    
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <h5 class="card-header bg-teal">Monthly most Viewed Pages</h5>
+      <div class="card-body p-3">
+        <div id="">
+          <canvas id="myChart1" width="100%" ></canvas>
+        </div>    
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <h5 class="card-header bg-danger">Monthly user engagement data</h5>
+      <div class="card-body p-2 bg-dark" style="background-color: #454d55!important;">
+        <div class="p-2 row">
+          <div class="col-md-4">
+            <input id="d1" type="text" data-readOnly=true data-fgColor="#FF3300" class="dial" data-width="80" data-height="100" data-thickness="0.1" data-bgColor="#FFFFFF">
+          </div>
+          <div class="col-md-8 pt-2" >
+            <p class="mb-0">Average</p>
+            <h2>Actions / visitor</h2>
+          </div>
+          <div class="col-md-4">
+            <input id="d2" type="text" data-readOnly=true data-fgColor="#00bc8c" class="dial" data-width="80" data-height="100" data-thickness="0.1" data-bgColor="#FFFFFF">
+          </div>
+          <div class="col-md-8 pt-2">
+            <p class="mb-0">Average</p>
+            <h2>Minutes / visitor</h2>
+          </div>
+          <div class="col-md-4">
+            <input id="d3" type="text" data-readOnly=true data-fgColor="#3498db" class="dial" data-width="80" data-height="100" data-thickness="0.1" data-bgColor="#FFFFFF">
+          </div>
+          <div class="col-md-8 pt-2">
+            <p class="mb-0">Monthly</p>
+            <h2>Bounce rate</h2>
+          </div>
+          
+          <script>
+            $.ajax({
+              url:'https://api.clicky.com/api/stats/4?site_id=101330330&sitekey=861423ba7d823be7&type=actions-average,time-average,bounce-rate&date=last-30-days&output=json',
+              method:'GET',
+              dataType:'json',
+              success: function(data){
+                //alert(data[0])
+                $('#d1').val(data[0]['dates'][0]['items'][0]['value']).trigger('change'); 
+                $('#d2').val((data[1]['dates'][0]['items'][0]['value']/60).toFixed(1)).trigger('change'); 
+                $('#d3').val(data[2]['dates'][0]['items'][0]['value']).trigger('change');          
+              }
+            })
+          </script>
+        </div>    
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card my-5">
+  <h4 class="card-header bg-primary">Newsletter</h4>
+  <div id="newsletter"></div>
+</div>
+
+
+
+<!-- chart data -->
+<script>
+
+  //page view data
+
+  var view_label=[];
+  var view_data=[];
+  var total_view=0;
+  var countrydata={};
+  var top_page_label=[];
+  var top_page_data=[];
+
+async function PageViewChart() {
+  
+  await getPageViewData();
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: view_label,
+          datasets: [{
+              label: 'Page views',
+              data: view_data,
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 2,
+              pointRadius: 5,
+              tension: 0.2,
+
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          },     
+              
+      }
+    
+  });
+
+
+  // top pages
+
+  var ctx1 = document.getElementById('myChart1').getContext('2d');
+  var myChart1 = new Chart(ctx1, {
+      type: 'doughnut',
+      data: {
+          labels: top_page_label,
+          datasets: [{
+              label: 'Top viewed pages',
+              data: top_page_data,
+              backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(75, 192, 192)',
+              'rgb(255, 205, 86)',
+              'rgb(54, 162, 235)',
+              '#593196',
+
+              ],
+              hoverOffset: 4,
+              
+              
+              
+          }],
+      },
+      options: {
+        plugins: {
+          legend: {
+            display:false,
+          },
+        }  
+    } 
+  });
+
+}
+
+// get data from clicky analytics api
+
+async function getPageViewData(){
+  
+  var response=await fetch('https://api.clicky.com/api/stats/4?site_id=101330330&sitekey=861423ba7d823be7&type=actions-pageviews&date=last-7-days&daily=1&output=json')
+  var totalviews=await fetch('https://api.clicky.com/api/stats/4?site_id=101330330&sitekey=861423ba7d823be7&type=actions-pageviews&date=last-30-days&output=json')
+  var visitors=await fetch('https://api.clicky.com/api/stats/4?site_id=101330330&sitekey=861423ba7d823be7&type=visitors&date=last-30-days&output=json')
+  //to be changed
+  var toppg=await fetch('https://api.clicky.com/api/stats/4?site_id=32020&sitekey=0f3545d91b71cf50&type=pages&date=last-30-days&output=json')
+  //var eng=await fetch('https://api.clicky.com/api/stats/4?site_id=101330330&sitekey=861423ba7d823be7&type=actions-average,time-average,bounce-rate&date=last-30-days&output=json')
+
+
+  var totalviews_data=await totalviews.json();
+  var data=await response.json();
+  var totalvisitors=await visitors.json();
+  var top_pages=await toppg.json();
+  //var eng_time=await eng.json();
+  
+  for(var i=6;i>=0;i--)
+        {
+          view_label.push(data[0]["dates"][i]["date"]);
+          view_data.push(data[0]["dates"][i]["items"][0]["value"]);     
+        }
+      $('#totalviews').html(totalviews_data[0]["dates"][0]["items"][0]["value"]);
+      $('#totalvisitors').html(totalvisitors[0]["dates"][0]["items"][0]["value"]);  
+      //$('#d1').val(Math.ceil(eng_time[0]['dates'][0]['items'][0]['value']));  
+      
+
+  var top_page_len=top_pages[0]["dates"][0]["items"].length;
+  if(top_page_len>5)
+  {
+    top_page_len=5;
+  }
+
+  for(var i=0;i<top_page_len;i++)
+  {
+    top_page_label.push(top_pages[0]["dates"][0]["items"][i]["title"]);
+    top_page_data.push(top_pages[0]["dates"][0]["items"][i]["value"]);
+  }
+
+  
+}
+    
+
+$(window).load(function(){
+  $(function() {
+    $(".dial").knob();
+    
+});
+    PageViewChart();
+    loadMap();
+    $('#newsletter').load('{% url "admindata" %}')    
+})  
+
+
+async function getCountryData(){
+
+    var traffic=await fetch('https://api.clicky.com/api/stats/4?site_id=101330330&sitekey=861423ba7d823be7&type=visitors-list&date=this-month&output=json')
+    var traffic_data=await traffic.json();
+
+    traffic_data=traffic_data[0]['dates'][0]['items']
+
+    for(i=0;i<traffic_data.length;i++)
+      {
+        var str=traffic_data[i]['country_code'].toUpperCase();
+        //alert(str);
+        if(countrydata[str]==undefined){
+          countrydata[str]=1;
+        }
+        else{
+          countrydata[str]+=1;
+        }
+      }
+}
+
+function loadMap(){
+  am4core.ready(async function() {
+
+    await getCountryData();
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+    
+    var continents = {
+      "AF": 0,
+      "AN": 1,
+      "AS": 2,
+      "EU": 3,
+      "NA": 4,
+      "OC": 5,
+      "SA": 6
+    }
+    
+    // Create map instance
+    var chart = am4core.create("chartdiv", am4maps.MapChart);
+    chart.projection = new am4maps.projections.Miller();
+    
+    // Create map polygon series for world map
+    var worldSeries = chart.series.push(new am4maps.MapPolygonSeries());
+    worldSeries.useGeodata = true;
+    worldSeries.geodata = am4geodata_worldLow;
+    worldSeries.exclude = ["AQ"];
+    
+    var worldPolygon = worldSeries.mapPolygons.template;
+    worldPolygon.tooltipText = "{name}:{visit}";
+    worldPolygon.nonScalingStroke = true;
+    worldPolygon.strokeOpacity = 0.5;
+    worldPolygon.fill = am4core.color("#eee");
+    worldPolygon.propertyFields.fill = "color";
+    
+    var hs = worldPolygon.states.create("hover");
+    hs.properties.fill = chart.colors.getIndex(9);
+    
+    
+
+    
+    // Set up data for countries
+    var data = [];
+    for(var id in am4geodata_data_countries2) {
+      if (am4geodata_data_countries2.hasOwnProperty(id)) {
+        var country = am4geodata_data_countries2[id];
+        var col;
+        if(countrydata[id]!=undefined){
+          col='#5cb85c';
+        }
+        else
+        {
+          col='#5bc0de';
+        }
+        if (country.maps.length) {
+          data.push({
+            id: id,
+            visit:(countrydata[id]==undefined?0:countrydata[id]),
+            //color: chart.colors.getIndex(continents[country.continent_code]),
+            color:col,
+            map: country.maps[0]
+          });
+        }
+      }
+    }
+    worldSeries.data = data;
+    
+ 
+    }); // end am4core.ready()  
+}
+
+</script>
+
+
+
+  
